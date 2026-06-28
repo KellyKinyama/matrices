@@ -1,7 +1,12 @@
 name: matrices
-description: A matrix operations and linear algebra library for Dart and Flutter. 
-version: 1.2.7
+description: An easy-to-use, high-performance matrix computation and linear algebra library with built-in parallel support.
+version: 2.0.0
 homepage: https://github.com/abandoft/matrices
 
 environment: 
-  sdk: ">=2.16.0 <4.0.0"
+  sdk: ">=3.9.0 <4.0.0"
+
+dev_dependencies:
+  benchmark_harness: ^2.3.1
+  ml_linalg: ^13.12.7
+  test: ^1.25.15
