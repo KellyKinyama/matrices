@@ -1,95 +1,112 @@
+## 2.0.0
+
+- Redesign the package around high performance and script-friendly ergonomics,
+  with Float32 matrix and vector types.
+- Replace nested-list internals with contiguous typed-data storage and pure Dart
+  SIMD kernels for dense matrix and vector hot paths.
+- Add broad linear algebra coverage, including direct solvers, decompositions,
+  eigen/SVD, pseudoinverse, least squares, PCA, iterative solvers, and Krylov
+  methods.
+- Add CSR sparse matrix support with dense conversion, sparse-vector products,
+  sparse-dense multiplication, transpose, and JSON serialization.
+- Align the 32-bit and 64-bit APIs across construction, arithmetic, statistics,
+  serialization, solvers, decompositions, advanced algorithms, and sparse
+  conversion.
+- Add reproducible correctness, numerical robustness, performance regression,
+  and benchmark-suite coverage.
+
 ## 1.2.7
 
-- doc update
+- Documentation update.
 
 ## 1.2.6
 
-- bugs fix
+- Bug fixes.
 
 ## 1.2.4
 
-- bugs fix
+- Bug fixes.
 
 ## 1.2.3
 
-- bugs fix
+- Bug fixes.
 
 ## 1.2.2
 
-- bugs fix
-- add doc webpage
+- Bug fixes.
+- Add documentation webpage.
 
 ## 1.2.1
 
-- bugs fix
-- add doc webpage
+- Bug fixes.
+- Add documentation webpage.
 
 ## 1.2.0
 
-- bugs fix
-- big update, please check the documentation
+- Bug fixes.
+- Major update; see the documentation.
 
 ## 1.1.5
 
-- bugs fix
-- add rowCount&columnCount&count
-- add max&min
+- Bug fixes.
+- Add `rowCount`, `columnCount`, and `count`.
+- Add `max` and `min`.
 
 ## 1.1.4
 
-- bugs fix
-- add fromFlattenedList
-- add identity matrix
+- Bug fixes.
+- Add `fromFlattenedList`.
+- Add identity matrix support.
 
 ## 1.1.3
 
-- bugs fix
+- Bug fixes.
 
 ## 1.1.2
 
-- bugs fix
-- improve inverse
-- methods standardization
+- Bug fixes.
+- Improve inverse.
+- Standardize methods.
 
 ## 1.1.0
 
-- bugs fix
-- remove emoji methods
-- methods standardization
+- Bug fixes.
+- Remove emoji methods.
+- Standardize methods.
 
 ## 1.0.11
 
-- bugs fix
-- improve speed of determinant greatly 
+- Bug fixes.
+- Greatly improve determinant performance.
 
 ## 1.0.9
 
-- bugs fix
+- Bug fixes.
 
 ## 1.0.8
 
-- update
+- Update.
 
 ## 1.0.7
 
-- doc update
+- Documentation update.
 
 ## 1.0.6
 
-- doc update
+- Documentation update.
 
 ## 1.0.5
 
-- add English Doc
+- Add English documentation.
 
 ## 1.0.4
 
-- doc update
+- Documentation update.
 
 ## 1.0.3
 
-- bugs fix
+- Bug fixes.
 
 ## 1.0.2
 
-- open source
+- Open source release.
