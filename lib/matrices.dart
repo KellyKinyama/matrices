@@ -17,3 +17,5 @@ export 'src/iterative.dart';
 export 'src/krylov.dart';
 export 'src/advanced.dart';
 export 'src/sparse_matrix.dart';
+export 'src/autodiff.dart';
+export 'src/nn.dart';
