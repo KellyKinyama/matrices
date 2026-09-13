@@ -1,3 +1,16 @@
+## Unreleased
+
+- Add statically-typed `scale()` to `Matrix64`, `Matrix32`, `Vector64`, and
+  `Vector32`, and explicit axis broadcasting (`addVector`, `subtractVector`,
+  `multiplyVector`, `divideVector`) on the matrix types to give a fully typed
+  multiply path and remove the square-matrix broadcast ambiguity.
+- Add a CPU reverse-mode automatic differentiation layer (`Variable`) built on
+  the existing SIMD kernels, covering matmul, elementwise arithmetic,
+  activations, reductions, broadcast-with-reduce bias, and memory-saving graph
+  freeing in `backward`.
+- Add a neural-network module: `Module`, `Linear`, `ReLU`, `Tanh`, `Sigmoid`,
+  `Sequential`, and `SGD` (with momentum) / `Adam` optimizers.
+
 ## 2.0.0
 
 - Redesign the package around high performance and script-friendly ergonomics,
