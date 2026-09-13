@@ -653,6 +653,29 @@ class Matrix64 {
 
   Matrix64 hadamard(Object other) => _binary(other, ElementwiseOp.multiply);
 
+  /// Scalar multiply that preserves the static [Matrix64] type.
+  ///
+  /// `operator *` returns `dynamic` because it also dispatches to
+  /// matrix/vector products; use [scale] when the result must stay
+  /// statically typed for chaining.
+  Matrix64 scale(num factor) => _binary(factor, ElementwiseOp.multiply);
+
+  /// Add [vector] to every line along [axis] with an explicit
+  /// orientation. `Axis.columns` expects `vector.length == columns`,
+  /// `Axis.rows` expects `vector.length == rows` — removing the
+  /// square-matrix ambiguity of the broadcasting operators.
+  Matrix64 addVector(Vector64 vector, Axis axis) =>
+      _broadcastAxis(vector, axis, ElementwiseOp.add);
+
+  Matrix64 subtractVector(Vector64 vector, Axis axis) =>
+      _broadcastAxis(vector, axis, ElementwiseOp.subtract);
+
+  Matrix64 multiplyVector(Vector64 vector, Axis axis) =>
+      _broadcastAxis(vector, axis, ElementwiseOp.multiply);
+
+  Matrix64 divideVector(Vector64 vector, Axis axis) =>
+      _broadcastAxis(vector, axis, ElementwiseOp.divide);
+
   Matrix64 matmul(Matrix64 other) {
     if (columns != other.rows) {
       throw ArgumentError(
@@ -939,6 +962,30 @@ class Matrix64 {
       'other',
       'Expected a num, Matrix64, or Vector64.',
     );
+  }
+
+  Matrix64 _broadcastAxis(Vector64 vector, Axis axis, ElementwiseOp op) {
+    final expected = axis == Axis.columns ? columns : rows;
+    if (vector.length != expected) {
+      throw ArgumentError(
+        'Vector64 length ${vector.length} must equal '
+        '${axis == Axis.columns ? 'columns $columns' : 'rows $rows'} '
+        'to broadcast along $axis.',
+      );
+    }
+    final vectorData = vector.unsafeValuesView;
+    final result = Float64List(count);
+    for (var row = 0; row < rows; row++) {
+      final offset = row * columns;
+      for (var column = 0; column < columns; column++) {
+        result[offset + column] = _apply(
+          _data[offset + column],
+          vectorData[axis == Axis.columns ? column : row],
+          op,
+        );
+      }
+    }
+    return Matrix64.storage(rows, columns, result, copy: false);
   }
 
   Matrix64 _broadcastVector(Vector64 vector, ElementwiseOp op) {

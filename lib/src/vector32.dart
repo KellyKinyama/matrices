@@ -80,6 +80,14 @@ class Vector32 extends IterableBase<double> {
 
   dynamic operator /(Object other) => _binary(other, ElementwiseOp.divide);
 
+  /// Scalar multiply that preserves the static [Vector32] type.
+  ///
+  /// `operator *` returns `dynamic` because it also dispatches to the
+  /// vector/matrix product; use [scale] when the result must stay
+  /// statically typed for chaining.
+  Vector32 scale(num factor) =>
+      Vector32.storage(Kernels.scale32(_data, factor.toDouble()), copy: false);
+
   double dot(Vector32 other) {
     _checkLength(other);
     return Kernels.dot32(_data, 0, other._data, 0, length);

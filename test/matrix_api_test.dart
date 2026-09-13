@@ -122,4 +122,67 @@ void main() {
       throwsArgumentError,
     );
   });
+
+  test('typed arithmetic methods preserve static types', () {
+    final Matrix64 a = mat([
+      [1, 2, 3],
+      [4, 5, 6],
+    ]);
+
+    final Matrix64 scaled = a.scale(2);
+    expect(scaled.transpose.toRows(), [
+      [2, 8],
+      [4, 10],
+      [6, 12],
+    ]);
+
+    final Vector64 x = vec([1, 2, 3]);
+    final Vector64 doubled = x.scale(2);
+    expect(doubled.toList(), [2, 4, 6]);
+
+    final Matrix32 a32 = mat32([
+      [1, 2],
+      [3, 4],
+    ]);
+    expect(a32.scale(3).transpose.toRows(), [
+      [3, 9],
+      [6, 12],
+    ]);
+    expect(vec32([1, 2]).scale(4).toList(), [4, 8]);
+  });
+
+  test('explicit axis broadcasting removes square-matrix ambiguity', () {
+    final a = mat([
+      [1, 2],
+      [3, 4],
+    ]);
+    final v = vec([10, 20]);
+
+    expect(a.addVector(v, Axis.columns).toRows(), [
+      [11, 22],
+      [13, 24],
+    ]);
+    expect(a.addVector(v, Axis.rows).toRows(), [
+      [11, 12],
+      [23, 24],
+    ]);
+    expect(a.subtractVector(v, Axis.columns).toRows(), [
+      [-9, -18],
+      [-7, -16],
+    ]);
+
+    final a32 = mat32([
+      [1, 2],
+      [3, 4],
+    ]);
+    expect(a32.multiplyVector(vec32([2, 3]), Axis.rows).toRows(), [
+      [2, 4],
+      [9, 12],
+    ]);
+
+    expect(
+      () => a.addVector(vec([1, 2, 3]), Axis.columns),
+      throwsArgumentError,
+    );
+  });
 }
