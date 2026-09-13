@@ -108,6 +108,14 @@ class Vector64 extends IterableBase<double> {
 
   dynamic operator /(Object other) => _binary(other, ElementwiseOp.divide);
 
+  /// Scalar multiply that preserves the static [Vector64] type.
+  ///
+  /// `operator *` returns `dynamic` because it also dispatches to the
+  /// vector/matrix product; use [scale] when the result must stay
+  /// statically typed for chaining.
+  Vector64 scale(num factor) =>
+      Vector64.storage(Kernels.scale(_data, factor.toDouble()), copy: false);
+
   double dot(Vector64 other) {
     _checkLength(other);
     return Kernels.dot(_data, 0, other._data, 0, length);
