@@ -1,3 +1,10 @@
+## Unreleased
+
+- Add statically-typed `scale()` to `Matrix64`, `Matrix32`, `Vector64`, and
+  `Vector32`, and explicit axis broadcasting (`addVector`, `subtractVector`,
+  `multiplyVector`, `divideVector`) on the matrix types to give a fully typed
+  multiply path and remove the square-matrix broadcast ambiguity.
+
 ## 2.0.0
 
 - Redesign the package around high performance and script-friendly ergonomics,
