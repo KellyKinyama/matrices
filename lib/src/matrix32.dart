@@ -396,6 +396,29 @@ class Matrix32 {
 
   Matrix32 hadamard(Object other) => _binary(other, ElementwiseOp.multiply);
 
+  /// Scalar multiply that preserves the static [Matrix32] type.
+  ///
+  /// `operator *` returns `dynamic` because it also dispatches to
+  /// matrix/vector products; use [scale] when the result must stay
+  /// statically typed for chaining.
+  Matrix32 scale(num factor) => _binary(factor, ElementwiseOp.multiply);
+
+  /// Add [vector] to every line along [axis] with an explicit
+  /// orientation. `Axis.columns` expects `vector.length == columns`,
+  /// `Axis.rows` expects `vector.length == rows` — removing the
+  /// square-matrix ambiguity of the broadcasting operators.
+  Matrix32 addVector(Vector32 vector, Axis axis) =>
+      _broadcastAxis32(vector, axis, ElementwiseOp.add);
+
+  Matrix32 subtractVector(Vector32 vector, Axis axis) =>
+      _broadcastAxis32(vector, axis, ElementwiseOp.subtract);
+
+  Matrix32 multiplyVector(Vector32 vector, Axis axis) =>
+      _broadcastAxis32(vector, axis, ElementwiseOp.multiply);
+
+  Matrix32 divideVector(Vector32 vector, Axis axis) =>
+      _broadcastAxis32(vector, axis, ElementwiseOp.divide);
+
   Matrix32 vstack(Matrix32 other) =>
       Matrix32.fromMatrix(toFloat64().vstack(other.toFloat64()));
 
@@ -717,6 +740,30 @@ class Matrix32 {
       'other',
       'Expected a num, Matrix32, or Vector32.',
     );
+  }
+
+  Matrix32 _broadcastAxis32(Vector32 vector, Axis axis, ElementwiseOp op) {
+    final expected = axis == Axis.columns ? columns : rows;
+    if (vector.length != expected) {
+      throw ArgumentError(
+        'Vector32 length ${vector.length} must equal '
+        '${axis == Axis.columns ? 'columns $columns' : 'rows $rows'} '
+        'to broadcast along $axis.',
+      );
+    }
+    final vectorData = vector.unsafeValuesView;
+    final result = Float32List(count);
+    for (var row = 0; row < rows; row++) {
+      final offset = row * columns;
+      for (var column = 0; column < columns; column++) {
+        result[offset + column] = _apply(
+          _data[offset + column],
+          vectorData[axis == Axis.columns ? column : row],
+          op,
+        );
+      }
+    }
+    return Matrix32.storage(rows, columns, result, copy: false);
   }
 
   Matrix32 _broadcastVector32(Vector32 vector, ElementwiseOp op) {
